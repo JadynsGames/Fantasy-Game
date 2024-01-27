@@ -1,8 +1,7 @@
 # Video Game Design
 Repo for our Fantasy/Adventure Game. Download and run this in Unity locally, and when you develop some features, create a new branch and upload all your files so we can merge them to the master branch.
+<br><br>
 
-
-<b>INFO:</b>
 <b>Last Year's Rubric:</b><br>
 https://tsaweb.org/docs/default-source/themes-and-problems-2018-2019/2021-2022/hs-rubric---video-game-designb.pdf
 <br><b>How to Use GitHub for Desktop with Unity:</b><br>
