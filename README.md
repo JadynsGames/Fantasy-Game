@@ -5,6 +5,8 @@ Repo for our Fantasy/Adventure Game. Download and run this in Unity locally, and
 <b>INFO:</b>
 <b>Last Year's Rubric:</b><br>
 https://tsaweb.org/docs/default-source/themes-and-problems-2018-2019/2021-2022/hs-rubric---video-game-designb.pdf
+<b>How to Use GitHub for Desktop with Unity:</b><br>
+https://github.com/orgs/community/discussions/56071
 
 
 <b>Example Documentation:</b><br>
