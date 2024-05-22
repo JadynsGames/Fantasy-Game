@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 8358542452837294462}
   - component: {fileID: 8358542452837294463}
   - component: {fileID: 8358542452837294459}
-  - component: {fileID: 8358542452837294460}
   - component: {fileID: 1562375479}
+  - component: {fileID: 332869514853200479}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -111,25 +111,8 @@ CharacterController:
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.1
-  m_MinMoveDistance: 0.001
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8358542452837294460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8358542452837294435}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e478c0cc6d326d0428f3ef40bdce5aca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 8358542452837294459}
-  baseSpeed: 3
-  gravity: -30
-  jumpHeight: 1.2
-  sprintSpeed: 5
 --- !u!114 &1562375479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,6 +125,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84271128a230d244194f1f382c0ec0c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &332869514853200479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8358542452837294435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e478c0cc6d326d0428f3ef40bdce5aca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 8358542452837294459}
+  baseSpeed: 2.4
+  gravity: -19
+  jumpHeight: 1.2
+  sprintSpeed: 3.5
 --- !u!1 &8358542453020051034
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,5 +247,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544fb994b587757419aad57fa3261472, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 120
+  mouseSensitivity: 36
   playerBody: {fileID: 8358542452837294461}
