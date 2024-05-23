@@ -141,7 +141,7 @@ MonoBehaviour:
   baseSpeed: 2.4
   gravity: -19
   jumpHeight: 1.2
-  sprintSpeed: 3.5
+  sprintSpeed: 2.4
 --- !u!1 &8358542453020051034
 GameObject:
   m_ObjectHideFlags: 0

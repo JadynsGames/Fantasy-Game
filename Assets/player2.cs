@@ -27,8 +27,6 @@ public class player2 : MonoBehaviour
     [SerializeField]
     private Text tooltip;
 
-    private bool tooltipsEnabled = true;
-
 
     [SerializeField]
     [Min(1)]
@@ -70,7 +68,7 @@ public class player2 : MonoBehaviour
             playerCameraTransform.forward,
             out hit,
             hitRange,
-            pickableLayerMask))
+            pickableLayerMask) && info.tooltipsEnabled)
         {
             pickUpUI.SetActive(true);
         }
@@ -93,14 +91,14 @@ public class player2 : MonoBehaviour
         // hide tooltips in corner
         if (Input.GetKeyDown(KeyCode.T))
         {
-            if (tooltipsEnabled)
+            if (info.tooltipsEnabled)
             {
-                tooltipsEnabled = false;
+                info.tooltipsEnabled = false;
                 tooltip.gameObject.SetActive(false);
             }
             else
             {
-                tooltipsEnabled = true;
+                info.tooltipsEnabled = true;
                 tooltip.gameObject.SetActive(true);
             }
         }

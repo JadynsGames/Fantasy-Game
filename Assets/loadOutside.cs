@@ -5,11 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class loadOutside : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     private void OnTriggerEnter(Collider collider)
     {

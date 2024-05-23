@@ -4,6 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 
+public static class info
+{
+    public static bool tooltipsEnabled = true;
+}
+
 public class Player : MonoBehaviour
 {
     [SerializeField]
@@ -50,6 +55,10 @@ public class Player : MonoBehaviour
     private Text gameOver;
     [SerializeField]
     private Text tooltip;
+    [SerializeField]
+    private Text subtitles;
+    [SerializeField]
+    private Text closeText;
 
     [SerializeField]
     [Min(1)]
@@ -65,8 +74,6 @@ public class Player : MonoBehaviour
 
     private RaycastHit hit;
 
-    private bool tooltipsEnabled = true;
-
     void DisplayTime(float timeToDisplay)
     {
         float minutes = Mathf.FloorToInt(timeToDisplay / 60);
@@ -75,14 +82,107 @@ public class Player : MonoBehaviour
         timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
+    IEnumerator voiceover(int num)
+    {
+        // remove tooltip for the time being
+        tooltip.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(1);
+
+        if (info.tooltipsEnabled)
+        {
+            subtitles.gameObject.SetActive(true);
+        }
+
+        if (num == 1)
+        {
+            voiceline.clip = (AudioClip)Resources.Load("voiceline1");
+            voiceline.Play();
+            yield return new WaitForSeconds(0.6f);
+            subtitles.text = "“MWAHA HA HA HAHA HA HA!”";
+            yield return new WaitForSeconds(2);
+            subtitles.text = "“After years of trying to capture you, I have finally done it.”";
+            yield return new WaitForSeconds(4.2f);
+            subtitles.text = "“You'll NEVER escape this dungeon...”";
+            yield return new WaitForSeconds(3.5f);
+        }
+        else if (num == 2)
+        {
+            voiceline.clip = (AudioClip)Resources.Load("voiceline2");
+            voiceline.Play();
+            yield return new WaitForSeconds(0.3f);
+            subtitles.text = "“Uhh... Darn it. Didn't think you'd figure that one out.”";
+            yield return new WaitForSeconds(4);
+            subtitles.text = "“But it's okay. My door locking magic is still strong.”";
+            yield return new WaitForSeconds(4);
+            subtitles.text = "“As long as you don't drink that green potion I left sitting out upstairs...”";
+            yield return new WaitForSeconds(5);
+            subtitles.text = "“Dang it! Why'd I have to say that??”";
+            yield return new WaitForSeconds(2);
+        }
+        else if (num == 3)
+        {
+            voiceline.clip = (AudioClip)Resources.Load("voiceline3");
+            voiceline.Play();
+
+            subtitles.text = "“AH! You may have disabled my evil magic,”";
+            yield return new WaitForSeconds(3);
+            subtitles.text = "“but that potion is too dangerous for you anyway.”";
+            yield return new WaitForSeconds(3);
+            subtitles.text = "“If you don't get into sunlight in one minute,”";
+            yield return new WaitForSeconds(2);
+            subtitles.text = "“you'll fall asleep, and you'll never escape this dungeon!”";
+            yield return new WaitForSeconds(3);
+            subtitles.text = "“The exit door is back where you started by the way, but you'll never make it in time.”";
+            yield return new WaitForSeconds(4);
+            subtitles.text = "“MWA HAHA HA HA...”";
+            yield return new WaitForSeconds(3);
+        }
+
+        subtitles.text = "";
+        yield return new WaitForSeconds(1);
+
+        if (info.tooltipsEnabled && !tooltip.gameObject.activeInHierarchy)
+        {
+            // fade in objective
+            Color c = tooltip.color;
+            c.a = 0f;
+            tooltip.color = c;
+            tooltip.gameObject.SetActive(true);
+
+            for (float t = 0f; c.a < 1f; t += Time.deltaTime)
+            {
+                c.a = c.a + 0.005f;
+                tooltip.color = c;
+                yield return null;
+            }
+        }
+    }
+
+    IEnumerator tooClose()
+    {
+        // fade in close info
+        Color c = closeText.color;
+        c.a = 1f;
+        closeText.color = c;
+        closeText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        for (float t = 0f; c.a > 0f; t += Time.deltaTime)
+        {
+            c.a = c.a - 0.01f;
+            closeText.color = c;
+            yield return null;
+        }
+        closeText.gameObject.SetActive(false);
+    }
+
     private void Start()
     {
         // fade in, play veer voiceline, music, and then todo list on side
         desiredAlpha = 0f;
-        voiceline.clip = (AudioClip)Resources.Load("voiceline1");
         music.clip = (AudioClip)Resources.Load("5. Redemption - Dungeon Dash OST");
-        voiceline.Play();
         music.Play();
+        StartCoroutine(voiceover(1));
     }
 
     void FinalCountdown()
@@ -90,8 +190,7 @@ public class Player : MonoBehaviour
         Debug.Log("drinking");
         soundEffect.clip = (AudioClip)Resources.Load("drink");
         soundEffect.Play();
-        voiceline.clip = (AudioClip)Resources.Load("voiceline3");
-        voiceline.Play();
+        StartCoroutine(voiceover(3));
         music.clip = (AudioClip)Resources.Load("1. Fortitude - Dungeon Dash OST");
         music.Play();
     }
@@ -102,7 +201,7 @@ public class Player : MonoBehaviour
         // fading stuff
         if (desiredAlpha != fadeScreen.color.a)
         {
-            currentAlpha = Mathf.MoveTowards(fadeScreen.color.a, desiredAlpha, 0.5f * Time.deltaTime);
+            currentAlpha = Mathf.MoveTowards(fadeScreen.color.a, desiredAlpha, 0.25f * Time.deltaTime);
             fadeScreen.color = new Color(fadeScreen.color.r, fadeScreen.color.g, fadeScreen.color.b, currentAlpha);
         }
 
@@ -136,20 +235,22 @@ public class Player : MonoBehaviour
         // hide tooltips in corner
         if (Input.GetKeyDown(KeyCode.T))
         {
-            if (tooltipsEnabled)
+            if (info.tooltipsEnabled)
             {
-                tooltipsEnabled = false;
+                info.tooltipsEnabled = false;
                 tooltip.gameObject.SetActive(false);
+                subtitles.gameObject.SetActive(false);
             }
             else
             {
-                tooltipsEnabled = true;
+                info.tooltipsEnabled = true;
                 tooltip.gameObject.SetActive(true);
+                // don't do subtitles here, they might interfere with tooltip
             }
         }
 
         Debug.DrawRay(playerCameraTransform.position, playerCameraTransform.forward * hitRange, Color.red);
-        if (hit.collider != null)
+        if (hit.collider != null && count != 5)
         {
             hit.collider.GetComponent<Highlight>()?.ToggleHighlight(false);
             pickUpUI.SetActive(false);
@@ -165,12 +266,28 @@ public class Player : MonoBehaviour
             usableLayerMask))
             {
                 Debug.Log("we see something usable");
+                string name = hit.collider.gameObject.name;
+                string myHand = inHandItem.gameObject.name;
+
+                if (info.tooltipsEnabled)
+                {
+                    // check if to display message
+                    if ((name == "King" && myHand == "Crown1") || name == "Priest" && myHand == "Staff1" || name == "Warrior" && myHand == "Shield1")
+                    {
+                        pickUpUI.GetComponent<Text>().text = "Left Click to Place";
+                        pickUpUI.SetActive(true);
+                    }
+                    else if (name == "Cauldron_Full" && myHand == "Flask")
+                    {
+                        pickUpUI.GetComponent<Text>().text = "Left Click to Scoop";
+                        pickUpUI.SetActive(true);
+                    }
+                }
+
                 if (Input.GetMouseButtonDown(0))
                 {
-                    // TODO: add tooltip display here that says use/place item
-
-                    string name = hit.collider.gameObject.name;
-                    string myHand = inHandItem.gameObject.name;
+                    //string name = hit.collider.gameObject.name;
+                    //string myHand = inHandItem.gameObject.name;
                     if (name == "King" && myHand == "Crown1")
                     {
                         Destroy(inHandItem.gameObject);
@@ -179,6 +296,7 @@ public class Player : MonoBehaviour
                         soundEffect.clip = (AudioClip)Resources.Load("crown");
                         soundEffect.Play();
                         count++;
+                        pickUpUI.SetActive(false);
                     }
                     else if (name == "Priest" && myHand == "Staff1")
                     {
@@ -188,6 +306,7 @@ public class Player : MonoBehaviour
                         soundEffect.clip = (AudioClip)Resources.Load("staff");
                         soundEffect.Play();
                         count++;
+                        pickUpUI.SetActive(false);
                     }
                     else if (name == "Warrior" && myHand == "Shield1")
                     {
@@ -197,6 +316,7 @@ public class Player : MonoBehaviour
                         soundEffect.clip = (AudioClip)Resources.Load("shield");
                         soundEffect.Play();
                         count++;
+                        pickUpUI.SetActive(false);
                     }
                     else if (name == "Cauldron_Full" && myHand == "Flask")
                     {
@@ -213,7 +333,16 @@ public class Player : MonoBehaviour
                         soundEffect.Play();
                         if (count == 4)
                         {
-                            tooltip.text = "Objective:\nClick anywhere to drink the potion";
+                            tooltip.text = "Objective:\nDrink the escape elixir";
+                            pickUpUI.GetComponent<Text>().text = "Left Click to Drink";
+                            if (info.tooltipsEnabled)
+                            {
+                                pickUpUI.SetActive(true);
+                            } else
+                            {
+                                pickUpUI.SetActive(false);
+                            }
+
                             count++;
                         }
                     }
@@ -229,6 +358,7 @@ public class Player : MonoBehaviour
                 {
                     if (count == 5 && inHandItem.gameObject.name == "Potion(Clone)")
                     {
+                        pickUpUI.SetActive(false);
                         FinalCountdown();
                         Destroy(inHandItem.gameObject);
                         inHandItem = null;
@@ -239,7 +369,7 @@ public class Player : MonoBehaviour
                         inHandItem.layer = 8;
                         inHandItem.transform.SetParent(pickUpParent.transform, false);
                         count++;
-                        tooltip.text = "Objective:\nReturn to the spawn area and escape the dungeon";
+                        tooltip.text = "Objective:\nReturn to the first room and escape the dungeon";
                         // ^^ countdown begins after this
                         // open doors
                         GameObject.Find("Door_Iron_Right").transform.Rotate(0.0f, 135.0f, 0.0f, Space.Self);
@@ -253,6 +383,11 @@ public class Player : MonoBehaviour
                         Debug.Log("too close to wall to drop");
                         soundEffect.clip = (AudioClip)Resources.Load("error");
                         soundEffect.Play();
+                        // if tooltips are off we don't show this
+                        if (info.tooltipsEnabled)
+                        {
+                            StartCoroutine(tooClose());
+                        }
                     } else
                     {
                         Debug.Log("here");
@@ -277,7 +412,11 @@ public class Player : MonoBehaviour
             pickableLayerMask))
         {
             hit.collider.GetComponent<Highlight>()?.ToggleHighlight(true);
-            pickUpUI.SetActive(true);
+            pickUpUI.GetComponent<Text>().text = "Left Click to Pick Up";
+            if (info.tooltipsEnabled)
+            {
+                pickUpUI.SetActive(true);
+            }
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -294,7 +433,7 @@ public class Player : MonoBehaviour
                 inHandItem.layer = 8;
                 if (hit.collider.name == "Flask" && count == 4)
                 {
-                    tooltip.text = "Objective:\nClick the cauldron to fill your bottle";
+                    tooltip.text = "Objective:\nScoop up some escape elixir";
                 }
             }
             Debug.Log("Pressed left-click.");
@@ -306,8 +445,7 @@ public class Player : MonoBehaviour
             Debug.Log("Advance to the next stage!");
             tooltip.text = "Objective:\nFind the brewery and pick up a glass bottle";
             GameObject.Find("MyDoor1").transform.eulerAngles = Vector3.zero;
-            voiceline.clip = (AudioClip)Resources.Load("voiceline2");
-            voiceline.Play();
+            StartCoroutine(voiceover(2));
             soundEffect.clip = (AudioClip)Resources.Load("door");
             soundEffect.Play();
             int x = Random.Range(0, 2);

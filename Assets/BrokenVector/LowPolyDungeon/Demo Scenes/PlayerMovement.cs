@@ -8,14 +8,10 @@ public class PlayerMovement : MonoBehaviour
     public float baseSpeed = 12f;
     public float gravity = -9.81f;
     public float jumpHeight = 3f;
-    public float sprintSpeed = 5f;
+    //public float sprintSpeed = 5f;
 
     float speedBoost = 1f;
     Vector3 velocity;
-    void Start()
-    {
-
-    }
 
     void Update()
     {
@@ -27,10 +23,10 @@ public class PlayerMovement : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
-        if (Input.GetButton("Fire3"))
+        /*if (Input.GetButton("Fire3"))
             speedBoost = sprintSpeed;
         else
-            speedBoost = 1f;
+            speedBoost = 1f;*/
 
 
         Vector3 move = transform.right * x + transform.forward * z;
