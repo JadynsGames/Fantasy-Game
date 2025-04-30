@@ -1,5 +1,5 @@
 # Video Game Design - TSA Nationals 2024 Submission
-UPDATE: First place in NJ 2024 conference, submitted to National Conference on May 22.<br>
+UPDATE: First place in NJ 2024 conference, submitted to National Conference on May 22.<br><br>
 <img src="https://github.com/user-attachments/assets/4bc5bc0b-3444-4c78-b81f-b0a8dd42b512" width="300" height="200" />
 <img src="https://github.com/user-attachments/assets/a9bcbad0-2978-487a-a970-23d9dca62bb7" width="300" height="200" />
 <img src="https://github.com/user-attachments/assets/bb808857-a6b0-4e9b-943b-29f64748a0e5" width="300" height="200" />
